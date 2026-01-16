@@ -47,8 +47,7 @@
 4.  **Feedback**: The frontend receives the prediction and updates the active confidence meter.
 5.  **Scoring & Persistence**:
     *   Upon quiz completion, the final score is calculated.
-    *   **Guest**: Score is saved to `localStorage`.
-    *   **User**: `Assessment.tsx` POSTs the score to the `/scores/` API endpoint, where it is securely stored in PostgreSQL linked to the unique `user_id`.
+    *   **User**: `Assessment.tsx` POSTs the score to the `/scores/` API endpoint, where it is securely stored in PostgreSQL.
 
 ## Key Files
 -   **Backend**: `app.py`, `models.py`, `routes.py`, `crud.py`.

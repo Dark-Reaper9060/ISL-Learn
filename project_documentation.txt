@@ -56,7 +56,7 @@ SignSiksha is an AI-powered educational platform designed to teach Indian Sign L
     -   `useWebSocket.ts`: Handles the resilient WebSocket connection to the AI inference engine.
     -   `ProtectedRoute.tsx`: A higher-order component that secures private routes from unauthenticated access.
     -   Assessment Module:
-        -   `Assessment.tsx`: Orchestrates the quiz flow, fetching high scores from the API for logged-in users while maintaining a local fallback for guests.
+        -   `Assessment.tsx`: Orchestrates the quiz flow, fetching high scores from the API for users .
         -   `AlphabetQuiz.tsx` & `WordQuiz.tsx`: Interactive testing modules with real-time AI feedback and stability checks.
     -   User Module:
         -   `Login.tsx`: Handles user registration and authentication.
