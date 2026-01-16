@@ -6,7 +6,7 @@
 ## System Architecture
 
 ### 1. Frontend (Client-Side)
-*   **Location:** `signbridge-isl/` (Legacy folder name)
+*   **Location:** `Frontend/`
 *   **Tech Stack:** 
     *   **Framework:** React (Vite)
     *   **Language:** TypeScript
