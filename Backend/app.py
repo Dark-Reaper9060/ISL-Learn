@@ -6,6 +6,9 @@ import json
 
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+import models
+from database import engine
+import routes
 
 import mediapipe as mp
 from mediapipe.tasks import python
@@ -52,9 +55,13 @@ options = HandLandmarkerOptions(
 landmarker = HandLandmarker.create_from_options(options)
 
 # =====================================================
-# FASTAPI
+# DATABASE & FASTAPI SETUP
 # =====================================================
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
+
+app.include_router(routes.router, tags=["API"])
 
 app.add_middleware(
     CORSMiddleware,

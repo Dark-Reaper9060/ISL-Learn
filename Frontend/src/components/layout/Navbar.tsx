@@ -1,19 +1,24 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Hand, BookOpen, Trophy, User, Menu, X } from "lucide-react";
+import { Hand, BookOpen, Trophy, User, Menu, X, LogIn, LogOut } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { path: "/learn", label: "Learn", icon: Hand },
-  { path: "/words", label: "Words", icon: BookOpen },
-  { path: "/assessment", label: "Quiz", icon: Trophy },
-  { path: "/profile", label: "Profile", icon: User },
-];
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+
+  const navItems = [
+    { path: "/learn", label: "Learn", icon: Hand },
+    { path: "/words", label: "Words", icon: BookOpen },
+    { path: "/assessment", label: "Quiz", icon: Trophy },
+  ];
+
+  if (user) {
+    navItems.push({ path: "/profile", label: "Profile", icon: User });
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b">
@@ -49,6 +54,24 @@ const Navbar = () => {
                 </Link>
               );
             })}
+
+            {!user ? (
+              <Link to="/login">
+                <Button variant={location.pathname === "/login" ? "default" : "ghost"} className="gap-2">
+                  <LogIn className="w-4 h-4" />
+                  Login
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                variant="ghost"
+                className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={logout}
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -70,8 +93,8 @@ const Navbar = () => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 return (
-                  <Link 
-                    key={item.path} 
+                  <Link
+                    key={item.path}
                     to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -85,6 +108,26 @@ const Navbar = () => {
                   </Link>
                 );
               })}
+              {!user ? (
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start gap-3">
+                    <LogIn className="w-4 h-4" />
+                    Login
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => {
+                    logout();
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </Button>
+              )}
             </div>
           </div>
         )}

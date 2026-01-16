@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  Hand, 
-  BookOpen, 
-  Trophy, 
-  Users, 
-  Sparkles, 
+import { useAuth } from "@/context/AuthContext";
+import { useState, useEffect } from "react";
+import { islAlphabets, ISLAlphabet } from "@/data/islAlphabets";
+import {
+  Hand,
+  BookOpen,
+  Trophy,
+  Sparkles,
   Camera,
   ArrowRight,
   CheckCircle2
@@ -42,6 +44,24 @@ const benefits = [
 ];
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [randomSigns, setRandomSigns] = useState<ISLAlphabet[]>([]);
+
+  useEffect(() => {
+    // Shuffle and pick 8
+    const shuffled = [...islAlphabets].sort(() => 0.5 - Math.random());
+    setRandomSigns(shuffled.slice(0, 8));
+  }, []);
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate("/learn");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -60,9 +80,8 @@ const Index = () => {
               <Link to="/learn">
                 <Button variant="ghost">Learn</Button>
               </Link>
-              <Link to="/learn">
-                <Button variant="hero">Get Started</Button>
-              </Link>
+
+              <Button variant="hero" onClick={handleGetStarted}>Get Started</Button>
             </div>
           </div>
         </div>
@@ -81,16 +100,16 @@ const Index = () => {
               <Sparkles className="w-4 h-4" />
               <span className="text-sm font-medium">AI-Powered Sign Language Learning</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-heading font-bold text-foreground mb-6 animate-fade-in">
               Learn{" "}
               <span className="text-primary">Indian Sign Language</span>
               {" "}with AI
             </h1>
-            
+
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in">
-              Master ISL alphabets and words through interactive lessons, 
-              real-time gesture recognition, and personalized feedback. 
+              Master ISL alphabets and words through interactive lessons,
+              real-time gesture recognition, and personalized feedback.
               Start your journey to fluent signing today.
             </p>
 
@@ -130,7 +149,7 @@ const Index = () => {
               Everything You Need to Learn ISL
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our platform combines cutting-edge AI technology with proven 
+              Our platform combines cutting-edge AI technology with proven
               learning methods to help you master Indian Sign Language.
             </p>
           </div>
@@ -155,6 +174,37 @@ const Index = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Random ISL Examples Section */}
+      <section className="py-20 px-4 bg-background/50">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">
+              Learn the Basics
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Here are a few signs to get you started!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            {randomSigns.map((sign) => (
+              <div key={sign.letter} className="glass-card p-2 rounded-lg text-center hover:scale-105 transition-transform">
+                <div className="aspect-square rounded-md overflow-hidden mb-1 bg-muted">
+                  <img
+                    src={sign.image}
+                    alt={`Sign for ${sign.letter}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="font-heading font-bold text-lg text-primary">
+                  {sign.letter}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -202,7 +252,7 @@ const Index = () => {
               Ready to Start Your Journey?
             </h2>
             <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-              Join thousands of learners who are mastering Indian Sign Language 
+              Join thousands of learners who are mastering Indian Sign Language
               with our AI-powered platform. It's free to start!
             </p>
             <Link to="/learn">
@@ -219,13 +269,21 @@ const Index = () => {
       <footer className="py-8 px-4 border-t border-border">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1">
               <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
                 <Hand className="w-4 h-4 text-primary-foreground" />
               </div>
               <span className="font-heading font-bold text-foreground">SignSiksha</span>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <a
+              href="https://www.kaggle.com/datasets/prathumarikeri/indian-sign-language-isl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 hover:underline text-sm font-medium"
+            >
+              Get Sign Language Dataset Here
+            </a>
+            <p className="text-sm text-muted-foreground flex-1 md:text-right">
               © 2026 SignSiksha. Making ISL accessible to everyone.
             </p>
           </div>
